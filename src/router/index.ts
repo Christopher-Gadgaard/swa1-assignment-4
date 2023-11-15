@@ -11,7 +11,6 @@ const routes: Array<RouteRecordRaw> = [
     component: HomeView,
   },
 
-
   {
     path: "/login",
     name: "login",
