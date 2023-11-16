@@ -30,7 +30,7 @@ export const apiService = {
   buildHeaders(token: string) {
     const headers = new Headers({
       'Content-Type': 'application/json',
-      // 'Authorization': `Bearer ${token}` // Uncomment if you switch to using Bearer tokens
+    
     });
     return headers;
   },
