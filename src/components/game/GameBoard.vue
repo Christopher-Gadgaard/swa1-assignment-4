@@ -10,10 +10,9 @@
         v-for="(tile, colIndex) in row"
         :key="`col-${colIndex}`"
         class="board-tile"
-        :class="`tile-type-${tile.pieceType}`"
         @click="tileClicked(rowIndex, colIndex)"
       >
-        {{ tile.pieceType }}
+        <img :src="require(`@/assets/${tile.svgPath}`)" alt="Game Tile" /> <!-- Display the SVG here -->
       </div>
     </div>
   </div>
@@ -44,6 +43,11 @@ export default defineComponent({
 .game-board {
   display: flex;
   flex-direction: column;
+  margin: auto; /* This can help with centering in some layouts */
+  max-width: 600px; /* Adjust as needed */
+  border: 2px solid #000; /* Example styling */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Just an example for some shadow */
 }
 .board-row {
   display: flex;
@@ -66,5 +70,10 @@ export default defineComponent({
 }
 .tile-type-C {
   background-color: green;
+}
+
+.board-tile img {
+  max-width: 100%;
+  max-height: 100%;
 }
 </style>

@@ -2,8 +2,8 @@
 
 // Define what a tile's data will look like
 export interface Tile {
-  pieceType: string; // Or an enum if you have specific types of pieces
-  // You can add additional properties if needed, such as 'isSelected', 'isMatched', etc.
+  pieceType: string; 
+  svgPath: string;
 }
 
 // Define the structure of the game board itself
@@ -27,12 +27,19 @@ export class GameBoard {
     return board;
   }
 
-  // Create a single random tile
-  private createRandomTile(): Tile {
-    const pieceTypes = ["A", "B", "C"]; // Example piece types
-    const randomIndex = Math.floor(Math.random() * pieceTypes.length);
-    return { pieceType: pieceTypes[randomIndex] };
-  }
+ // Create a single random tile
+private createRandomTile(): Tile {
+  const pieceTypes = [
+    { type: "A", svg: "atronaut-svgrepo-com.svg" }, // Update these paths
+    { type: "B", svg: "brain-slug-svgrepo-com.svg" },
+    { type: "C", svg: "laser-gun-svgrepo-com.svg" }
+  ];
+  const randomIndex = Math.floor(Math.random() * pieceTypes.length);
+  return {
+    pieceType: pieceTypes[randomIndex].type,
+    svgPath: pieceTypes[randomIndex].svg
+  };
+}
 
   // Public method to get a tile at a specific position
   public getTile(row: number, col: number): Tile | undefined {
