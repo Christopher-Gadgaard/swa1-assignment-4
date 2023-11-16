@@ -35,6 +35,8 @@ export const apiService = {
     return headers;
   },
 
+
+
   async processResponse(response: Response) {
     if (!response.ok) {
       const message = await response.text();
@@ -43,3 +45,4 @@ export const apiService = {
     return response.json();
   }
 };
+
