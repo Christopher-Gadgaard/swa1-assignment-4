@@ -26,9 +26,15 @@
 <script lang="ts">
 import { User, UserService } from '@/models/User';
 import { authService } from '@/services/authService'; // Adjust the path as per your project structure
+import { useStore } from 'vuex';
+import router from '@/router'; // Adjust the import path to your router configuration
 
 export default {
     name:"LoginForm",
+    setup() {
+        const store = useStore();
+        return { store };
+    },
     data() {
         return {
             username: '',
@@ -63,14 +69,17 @@ export default {
         async login(userData: User) {
             const response = await authService.login(userData.username, userData.password);
             console.log('Login successful:', response);
-            // Handle post-login logic, like redirecting the user
+            this.store.dispatch('user/login', response.user); // Dispatch login action
+            router.push({ name: 'Home' }); // Navigate to home page
+           
         },
         async signup(userData: User) {
             const response = await authService.createUser(userData);
             console.log('Signup successful:', response);
-            // Handle post-signup logic, like redirecting or auto-logging in the user
-        }
+            this.store.dispatch('user/login', response.user); // Dispatch login action after signup
+            router.push({ name: 'Home' }); // Navigate to home page
     }
+}
 }
 </script>
 <style>
