@@ -39,10 +39,17 @@ export const apiService = {
 
   async processResponse(response: Response) {
     if (!response.ok) {
-      const message = await response.text();
-      throw new Error(message || 'Server responded with an error');
+        const message = await response.text(); // Read response as text
+        throw new Error(message || 'Server responded with an error');
     }
-    return response.json();
-  }
+    
+    // Check if the response is JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+        return response.json(); // Parse response as JSON
+    } else {
+        return response.text(); // Return response as text
+    }
+}
 };
 
