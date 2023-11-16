@@ -1,16 +1,13 @@
+// store/index.ts
 import { createStore } from 'vuex'
+
 import user from "../store/modules/user";
+
+import { game } from './modules/game' // import the game module
+
 export default createStore({
-  // state: {
-  //   currentUser: null, // This will hold the logged-in user data
-  // },
-  // getters: {
-  // },
-  // mutations: {
-  // },
-  // actions: {
-  // },
   modules: {
+    game, // register the game module
     user
   }
 })
