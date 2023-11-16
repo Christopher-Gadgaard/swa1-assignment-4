@@ -19,15 +19,31 @@
                 <router-link to="/high-scores" class="navbar-item">
                     <i class="fa fa-list-ol"></i> High Scores
                 </router-link>
+                <a @click="logout" class="dropdown-item" >
+                    <i class="fa fa-sign-out"></i> Logout
+                </a>
                 <!-- Add more dropdown links here if necessary -->
             </div>
         </div>
     </nav>
 </template>
-  
-<script lang="ts">
+  <script lang="ts">
+import { authService } from '@/services/authService'; // Adjust the import path as needed
+import router from '@/router'; // Adjust the import path as needed
+
 export default {
-    name: 'Navbar'
+    name: 'Navbar',
+    methods: {
+        async logout() {
+            try {
+                await authService.logout();
+                router.push({ name: 'Login' }); // Redirect to login page after logout
+            } catch (error) {
+                console.error('Logout failed:', error);
+                // Handle errors (e.g., show an error message)
+            }
+        }
+    }
 }
 </script>
   
@@ -94,6 +110,7 @@ export default {
 .dropdown-item {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .dropdown-item i {

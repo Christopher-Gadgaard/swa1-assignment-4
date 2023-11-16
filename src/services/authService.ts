@@ -18,9 +18,11 @@ export const authService = {
   async logout() {
     try {
       const token = localStorage.getItem('authToken');
+      
       if (token) {
         // Use the post method with the logout endpoint
-        await apiService.post('/logout', token);
+       const response= await apiService.post('/logout', token);
+       console.log('Logout response:', response);
         localStorage.removeItem('authToken');
         // Handle additional cleanup if necessary
       }
