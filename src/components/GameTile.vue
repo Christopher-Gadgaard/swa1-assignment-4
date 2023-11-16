@@ -1,33 +1,49 @@
 <!--components/GameTile.vue-->
 
 <template>
-    <div class="game-tile" @click="tileClicked">
-      <!-- Use an img tag to display the SVG -->
-      <img :src="tileImage" alt="Game Tile" />
-    </div>
-  </template>
-  
-  <script lang="ts">
-  import { defineComponent } from 'vue';
-  import { TilePosition } from "@/types/types"; 
+  <div 
+    class="game-tile" 
+    @click="tileClicked" 
+    @mouseover="hovering = true" 
+    @mouseleave="hovering = false"
+    :class="{ 'hover-effect': hovering, 'selected': isSelected }"
+  >
+    <img :src="tileImage" alt="Game Tile" />
+  </div>
+</template>
 
-  
-  export default defineComponent({
-    name: 'GameTile',
-    props: {
-      tileImage: String,
-      position: {
-        type: Object as () => TilePosition,
-        required: true
-      }
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
+import { TilePosition } from "@/types/types"; 
+
+export default defineComponent({
+  name: 'GameTile',
+  props: {
+    tileImage: String,
+    position: {
+      type: Object as () => TilePosition,
+      required: true
     },
-    methods: {
-      tileClicked() {
-        this.$emit('tile-clicked', this.position);
-      }
+    isSelected: {
+      type: Boolean,
+      default: false
     }
-  });
-  </script>
+  },
+  setup() {
+    const hovering = ref(false);
+
+    return {
+      hovering,
+      // other properties and methods
+    };
+  },
+  methods: {
+    tileClicked() {
+      this.$emit('tile-clicked', this.position);
+    }
+  }
+});
+</script>
   
   
   <style scoped>
@@ -35,16 +51,27 @@
     /* Add styles for your tiles here */
     width: 50px;
     height: 50px;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    cursor: pointer; 
+   transition: transform 0.2s ease, box-shadow 0.2s ease;
+   
   }
   
   .game-tile img {
     max-width: 100%;
     max-height: 100%;
   }
+
+  .game-tile.hover-effect {
+    transform: scale(1.1); /* Scale up the tile */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Enhance shadow for 3D effect */
+}
+
+.game-tile.selected {
+  border: 2px solid #ffcc00; /* Highlight the tile, adjust color as needed */
+}
   </style>
   

@@ -200,20 +200,28 @@ export class GameLogic {
   }
 
   public simulateSwap(firstTile: TilePosition, secondTile: TilePosition): boolean {
-  // Temporarily swap tiles for simulation
-  this.performSwap(firstTile, secondTile);
+     // Check if tiles are in the same row or column
+  const isInSameRowOrColumn = firstTile.row === secondTile.row || firstTile.col === secondTile.col;
 
-  const hasMatch = this.findMatches().length > 0;
-
-  // Swap back to original state
-  this.performSwap(firstTile, secondTile);
-
-  // Do not count this as a valid move
-  this.movesMade--;
-  this.movesMade--;
-
-  return hasMatch;
+  if (!isInSameRowOrColumn) {
+    return false;
   }
+  
+    // Temporarily swap tiles for simulation
+    this.performSwap(firstTile, secondTile);
+  
+    const hasMatch = this.findMatches().length > 0;
+  
+    // Swap back to original state
+    this.performSwap(firstTile, secondTile);
+  
+    // Do not count this as a valid move
+    this.movesMade--;
+    this.movesMade--;
+  
+    return hasMatch;
+  }
+  
 
   public getBoard(): Tile[][] {
     return this.board;

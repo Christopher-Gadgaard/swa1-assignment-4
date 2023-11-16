@@ -3,18 +3,14 @@
   <div class="game-board-container">
     <div class="card game-board">
       <div v-for="(row, rowIndex) in boardData" :key="rowIndex" class="board-row">
-        <GameTile
-          v-for="(tile, colIndex) in row"
-          :key="colIndex"
-          :tileImage="getTileImage(tile)"
-          :position="{ row: rowIndex, col: colIndex }"
-          @tile-clicked="handleTileClick"
-        />
+        <GameTile v-for="(tile, colIndex) in row" :key="colIndex" :tileImage="getTileImage(tile)"
+          :position="{ row: rowIndex, col: colIndex }" :isSelected="isSelectedTile({ row: rowIndex, col: colIndex })"
+          @tile-clicked="handleTileClick" />
       </div>
       <div class="game-info">
-  <p>Score: {{ score }}</p>
-  <p>Moves Left: {{ remainingMoves }}</p>
-</div>
+        <p>Score: {{ score }}</p>
+        <p>Moves Left: {{ remainingMoves }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -35,23 +31,29 @@ export default defineComponent({
     // ViewModel part: managing state and interactions
     const gameLogic = reactive(new GameLogic(8, 8));
     const selectedTile = ref<TilePosition | null>(null);
-      const score = computed(() => gameLogic.getScore());
-  const remainingMoves = computed(() => gameLogic.getRemainingMoves());
-        // Use a computed property to reactively access the game board
-        const boardData = computed(() => gameLogic.getBoard());
+    const score = computed(() => gameLogic.getScore());
+    const remainingMoves = computed(() => gameLogic.getRemainingMoves());
+    // Use a computed property to reactively access the game board
+    const boardData = computed(() => gameLogic.getBoard());
+
+    const isSelectedTile = (position: TilePosition) => {
+  return (selectedTile.value && selectedTile.value.row === position.row && selectedTile.value.col === position.col) || false;
+};
+
+
 
     const handleTileClick = (position: TilePosition) => {
       if (selectedTile.value) {
-    // If simulateSwap is true, then perform the actual swap
-    if (gameLogic.simulateSwap(selectedTile.value, position)) {
-      gameLogic.performSwap(selectedTile.value, position);
-      gameLogic.processMatches();
-      // Additional logic if needed
-    }
-    selectedTile.value = null;
-  } else {
-    selectedTile.value = position;
-  }
+        // If simulateSwap is true, then perform the actual swap
+        if (gameLogic.simulateSwap(selectedTile.value, position)) {
+          gameLogic.performSwap(selectedTile.value, position);
+          gameLogic.processMatches();
+          // Additional logic if needed
+        }
+        selectedTile.value = null;
+      } else {
+        selectedTile.value = position;
+      }
     };
 
     onMounted(() => {
@@ -59,10 +61,11 @@ export default defineComponent({
     });
 
     // Expose state and methods to the template (View)
-    return { 
+    return {
       boardData,
       score,
-    remainingMoves,
+      remainingMoves,
+      isSelectedTile,
       handleTileClick,
       getTileImage(tile: Tile): string {
         return require(`@/assets/${tile.type}.svg`);
@@ -77,7 +80,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
- 
+
 }
 
 .card {
@@ -91,6 +94,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
 }
+
 .game-info {
   text-align: center;
   margin-top: 15px;
