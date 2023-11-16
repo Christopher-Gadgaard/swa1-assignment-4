@@ -24,32 +24,51 @@
 </div>
 </template>
 <script lang="ts">
+import { User, UserService } from '@/models/User';
+import { authService } from '@/services/authService'; // Adjust the path as per your project structure
+
 export default {
     name:"LoginForm",
     data() {
         return {
             username: '',
             password: '',
-            action: 'login' // Default action
+            action: 'login', // Default action
+            userService: new UserService() // Instance of UserService
         };
     },
     methods: {
-        handleSubmit() {
-            if (this.action === 'login') {
-                this.login();
-            } else {
-                this.signup();
+        async handleSubmit() {
+            const userData: User = {
+                username: this.username,
+                password: this.password
+            };
+
+            // Validate user data
+            if (!this.userService.validateUserData(userData)) {
+                alert("Invalid user data. Please check the requirements.");
+                return;
+            }
+
+            try {
+                if (this.action === 'login') {
+                    await this.login(userData);
+                } else {
+                    await this.signup(userData);
+                }
+            } catch (error:any) {
+                alert(error.message);
             }
         },
-        login() {
-            // TODO: Implement login logic
-            console.log('Logging in:', this.username, this.password);
-            // You would typically make an HTTP request to your server here
+        async login(userData: User) {
+            const response = await authService.login(userData.username, userData.password);
+            console.log('Login successful:', response);
+            // Handle post-login logic, like redirecting the user
         },
-        signup() {
-            // TODO: Implement signup logic
-            console.log('Signing up:', this.username, this.password);
-            // Similarly, make an HTTP request to your server for signup
+        async signup(userData: User) {
+            const response = await authService.createUser(userData);
+            console.log('Signup successful:', response);
+            // Handle post-signup logic, like redirecting or auto-logging in the user
         }
     }
 }
