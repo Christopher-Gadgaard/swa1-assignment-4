@@ -1,4 +1,4 @@
-<!--GameTile.vue-->
+<!--components/GameTile.vue-->
 
 <template>
     <div class="game-tile" @click="tileClicked">
@@ -9,11 +9,8 @@
   
   <script lang="ts">
   import { defineComponent } from 'vue';
-  
- export interface TilePosition {
-    row: number;
-    col: number;
-  }
+  import { TilePosition } from "@/types/types"; 
+
   
   export default defineComponent({
     name: 'GameTile',

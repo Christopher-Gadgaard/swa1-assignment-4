@@ -1,3 +1,4 @@
+<!--views/Game.vue-->
 <template>
   <div class="game-view-container">
     <!-- Logo image -->
