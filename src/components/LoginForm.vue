@@ -1,87 +1,91 @@
 <!--LoginForm.vue-->
 <template>
-<div id="login-signup-form">
-    <h2>Login / Signup</h2>
-    <form @submit.prevent="handleSubmit">
-        <!-- Username Field -->
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" v-model="username" required>
-        </div>
-
-        <!-- Password Field -->
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" v-model="password" required>
-        </div>
-
-        <!-- Login and Signup Buttons -->
-        <div class="form-actions">
-            <button type="submit" @click="action = 'login'">Login</button>
-            <button type="submit" @click="action = 'signup'">Signup</button>
-        </div>
-    </form>
-</div>
-</template>
-<script lang="ts">
-import { User, UserService } from '@/models/User';
-import { authService } from '@/services/authService'; // Adjust the path as per your project structure
-import { useStore } from 'vuex';
-import router from '@/router'; // Adjust the import path to your router configuration
-
-export default {
-    name:"LoginForm",
-    setup() {
-        const store = useStore();
-        return { store };
-    },
-    data() {
-        return {
-            username: '',
-            password: '',
-            action: 'login', // Default action
-            userService: new UserService() // Instance of UserService
-        };
-    },
-    methods: {
-        async handleSubmit() {
-            const userData: User = {
-                username: this.username,
-                password: this.password
+    <div id="login-signup-form">
+        <h2>Login / Signup</h2>
+        <form @submit.prevent="handleSubmit">
+            <!-- Username Field -->
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" v-model="username" required>
+            </div>
+    
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" v-model="password" required>
+            </div>
+    
+            <!-- Login and Signup Buttons -->
+            <div class="form-actions">
+                <button type="submit" @click="setAction('login')">Login</button>
+                <button type="submit" @click="setAction('signup')">Signup</button>
+            </div>
+        </form>
+    </div>
+    </template>
+    
+    <script lang="ts">
+    import { ref } from 'vue';
+    import { useStore } from 'vuex';
+    import { useRouter } from 'vue-router';
+    import { User, UserService } from '@/models/User';
+    import { authService } from '@/services/authService'; // Adjust the path as per your project structure
+    
+    export default {
+        name:"LoginForm",
+        setup() {
+            const store = useStore();
+            const router = useRouter();
+            const username = ref('');
+            const password = ref('');
+            const action = ref('login'); // Default action
+            const userService = new UserService(); // Instance of UserService
+    
+            const setAction = (newAction: string) => {
+                action.value = newAction;
             };
-
-            // Validate user data
-            if (!this.userService.validateUserData(userData)) {
-                alert("Invalid user data. Please check the requirements.");
-                return;
-            }
-
-            try {
-                if (this.action === 'login') {
-                    await this.login(userData);
-                } else {
-                    await this.signup(userData);
+    
+            const handleSubmit = async () => {
+                const userData: User = {
+                    username: username.value,
+                    password: password.value
+                };
+    
+                // Validate user data
+                if (!userService.validateUserData(userData)) {
+                    alert("Invalid user data. Please check the requirements.");
+                    return;
                 }
-            } catch (error:any) {
-                alert(error.message);
-            }
-        },
-        async login(userData: User) {
-            const response = await authService.login(userData.username, userData.password);
-            console.log('Login successful:', response);
-            this.store.dispatch('user/login', response.user); // Dispatch login action
-            router.push({ name: 'Home' }); // Navigate to home page
-           
-        },
-        async signup(userData: User) {
-            const response = await authService.createUser(userData);
-            console.log('Signup successful:', response);
-            this.store.dispatch('user/login', response.user); // Dispatch login action after signup
-            router.push({ name: 'Home' }); // Navigate to home page
+    
+                try {
+                    if (action.value === 'login') {
+                        await login(userData);
+                    } else {
+                        await signup(userData);
+                    }
+                } catch (error:any) {
+                    alert(error.message);
+                }
+            };
+    
+            const login = async (userData: User) => {
+                const response = await authService.login(userData.username, userData.password);
+                console.log('Login successful:', response);
+                store.dispatch('user/login', response.user); // Dispatch login action
+                router.push({ name: 'Home' }); // Navigate to home page
+            };
+    
+            const signup = async (userData: User) => {
+                const response = await authService.createUser(userData);
+                console.log('Signup successful:', response);
+                store.dispatch('user/login', response.user); // Dispatch login action after signup
+                router.push({ name: 'Home' }); // Navigate to home page
+            };
+    
+            return { username, password, setAction, handleSubmit };
+        }
     }
-}
-}
-</script>
+    </script>
 <style>
 
     #login-signup-form{
