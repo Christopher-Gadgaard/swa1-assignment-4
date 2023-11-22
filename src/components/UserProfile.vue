@@ -1,4 +1,3 @@
-<!--UserProfile.vue-->
 <template>
   <div>
     <p>Hello, {{ username }}</p>
@@ -12,41 +11,76 @@
       <button @click="updatePassword">Save</button>
       <button @click="cancelUpdate">Cancel</button>
     </div>
+    <p v-if="message">{{ message }}</p>
   </div>
 </template>
 
 <script lang="ts">
-import store from "@/store";
+import { userService } from "@/services/userService";
+import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
 
 export default {
-  data() {
-    return {
-      username: "User", // Replace with dynamic data
-      showUpdate: false,
-      newPassword: "",
-    };
-  },
   setup() {
     const store = useStore();
-    const playerId = store.state.user.id;
+    const username = ref("User");
+    const showUpdate = ref(false);
+    const newPassword = ref("");
+    const message = ref("");
+    const fetchUserData = async () => {
+      try {
+        const userId = store.state.user.user.id;
+        const token = store.state.user.token;
 
-    console.log(store.state.user.token, "token");
-    console.log(store.state.user.user.id, "id");
-  },
-  methods: {
-    showUpdateField() {
-      this.showUpdate = true;
-    },
-    updatePassword() {
-      // Logic to update the password
-      this.showUpdate = false;
-      this.newPassword = "";
-    },
-    cancelUpdate() {
-      this.showUpdate = false;
-      this.newPassword = "";
-    },
+        if (userId && token) {
+          const userData = await userService.getUserById(userId, token);
+          username.value = userData.username;
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
+
+    onMounted(fetchUserData);
+
+    const showUpdateField = () => {
+      showUpdate.value = true;
+    };
+
+    const updatePassword = async () => {
+      try {
+        const userId = store.state.user.user.id;
+        const token = store.state.user.token;
+
+        if (userId && token && newPassword.value) {
+          const updatedUserData = { password: newPassword.value };
+          await userService.updateUser(userId, updatedUserData, token);
+          message.value = "Password updated successfully!";
+          newPassword.value = "";
+          showUpdate.value = false;
+        } else {
+          message.value = "Missing user ID, token, or new password.";
+        }
+      } catch (error) {
+        console.error("Failed to update password:", error);
+        message.value = "Failed to update password. Please try again.";
+      }
+    };
+
+    const cancelUpdate = () => {
+      showUpdate.value = false;
+      newPassword.value = "";
+    };
+
+    return {
+      username,
+      showUpdate,
+      newPassword,
+      message,
+      showUpdateField,
+      updatePassword,
+      cancelUpdate,
+    };
   },
 };
 </script>
