@@ -7,8 +7,7 @@ export interface Game {
   id: number;
   score: number;
   completed: boolean;
-  playerId: number;
- 
+  user: number;
 }
 
 export interface GameState {
@@ -49,6 +48,7 @@ export const game = {
       const { commit } = context;
       try {
         const games = await gameService.fetchGames(token);
+        console.log(games);
         commit('setGames', games);
       } catch (error) {
         commit('setError', (error as Error).message);
