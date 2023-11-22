@@ -1,6 +1,6 @@
 // store/modules/game.ts
+import { gameService } from '@/services/gameService';
 import { ActionContext } from 'vuex';
-import { gameService } from '../../services/gameService'; // Update the path as necessary
 
 // Replace 'any' with the actual types of your game objects and user objects.
 export interface Game {
