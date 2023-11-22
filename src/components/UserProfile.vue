@@ -23,10 +23,11 @@ import { useStore } from "vuex";
 export default {
   setup() {
     const store = useStore();
-    const username = ref("User");
+    const username = ref("");
     const showUpdate = ref(false);
     const newPassword = ref("");
     const message = ref("");
+
     const fetchUserData = async () => {
       try {
         const userId = store.state.user.user.id;
