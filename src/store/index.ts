@@ -1,9 +1,13 @@
-import { createStore } from "vuex";
+// store/index.ts
+import { createStore } from 'vuex'
+
+import user from "../store/modules/user";
+
+import  {game} from '../store/modules/game' // import the game module
 
 export default createStore({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
-});
+  modules: {
+    game, // register the game module
+    user
+  }
+})
