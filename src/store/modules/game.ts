@@ -54,6 +54,5 @@ export const game = {
         commit('setError', (error as Error).message);
       }
     },
-    // ... other actions for fetching by ID, updating game, etc.
   }
 };

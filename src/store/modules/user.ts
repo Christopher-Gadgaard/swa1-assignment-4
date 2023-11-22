@@ -5,7 +5,6 @@ import { Module } from 'vuex';
 export interface User {
   id?: string;
   username: string;
-  // Other user properties
 }
 
 export interface UserState {

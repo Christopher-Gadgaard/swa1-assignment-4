@@ -37,9 +37,8 @@ export default {
     const router = useRouter();
     const username = ref("");
     const password = ref("");
-    const action = ref("login"); // Default action
-    const userService = new UserService(); // Instance of UserService
-
+    const action = ref("login");
+    const userService = new UserService();
     const setAction = (newAction: string) => {
       action.value = newAction;
     };
@@ -78,7 +77,7 @@ export default {
         user: { id: response.userId, username: userData.username },
         token: response.token,
       });
-      router.push({ name: "Home" }); // Navigate to home page
+      router.push({ name: "Home" });
     };
 
     const signup = async (userData: User) => {
@@ -89,7 +88,7 @@ export default {
         user: { id: response.userId, username: userData.username },
         token: response.token,
       }); // Dispatch login action after signup
-      router.push({ name: "Home" }); // Navigate to home page
+      router.push({ name: "Home" });
     };
 
     return { username, password, setAction, handleSubmit };

@@ -71,7 +71,6 @@ export class GameLogic {
 
   private findMatches(): Array<TilePosition> {
     let matches: Array<TilePosition> = [];
-    // Add logic to find horizontal and vertical matches
     matches = matches.concat(this.findHorizontalMatches());
     matches = matches.concat(this.findVerticalMatches());
     return matches;
@@ -135,7 +134,6 @@ export class GameLogic {
     };
 
     const expandFromTile = (x: number, y: number, type: TileType) => {
-      // Check and add matches for adjacent tiles
       checkAndAddMatch(x - 1, y, type); // Up
       checkAndAddMatch(x + 1, y, type); // Down
       checkAndAddMatch(x, y - 1, type); // Left
@@ -156,7 +154,7 @@ export class GameLogic {
       this.removeMatches(matches);
       this.collapseBoard();
       this.refillBoard();
-      this.score += matches.length * 10; // Adjust scoring as needed
+      this.score += matches.length * 10; 
   
       matches = this.findMatches();
     }

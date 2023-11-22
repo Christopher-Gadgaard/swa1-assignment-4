@@ -36,7 +36,7 @@ export default {
     const router = useRouter();
 
     const startGame = () => {
-      router.push({ name: "Game" }); // Replace 'Game' with the actual route name of your game page
+      router.push({ name: "Game" });
     };
 
     return { startGame };
@@ -82,13 +82,13 @@ export default {
   content: "•";
   position: absolute;
   left: 0;
-  color: #007bff; /* Choose a color that matches your app theme */
+  color: #007bff;
   font-size: 20px;
   line-height: 20px;
 }
 
 button {
-  background-color: #007bff; /* Choose a button color that fits your theme */
+  background-color: #007bff;
   color: white;
   padding: 10px 20px;
   border: none;

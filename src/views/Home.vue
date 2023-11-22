@@ -15,14 +15,13 @@ export default {
   components: {
     Home,
   },
-  // Other options like data, methods, etc.
 };
 </script>
 <style>
 .game-logo-home {
   background-color: rgb(66, 66, 66);
   border-radius: 20px;
-  max-width: 200px; /* Adjust the width as needed */
+  max-width: 200px;
   margin-bottom: 2rem;
 }
 </style>
