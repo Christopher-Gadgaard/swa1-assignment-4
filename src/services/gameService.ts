@@ -32,6 +32,7 @@ export const gameService = {
 
   async updateGame(gameId: number, token: string, updateData: object) {
     try {
+      console.log("updateGame", gameId, token, updateData);
       const updatedGame = await apiService.patch(`/games/${gameId}`, token, updateData);
       return updatedGame;
     } catch (error) {

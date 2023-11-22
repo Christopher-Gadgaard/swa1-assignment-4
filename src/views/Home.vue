@@ -1,3 +1,4 @@
+<!--views/home.vue-->
 <template>
   <div class="home">
     <img

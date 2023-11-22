@@ -1,5 +1,6 @@
 // models/GameLogic.ts
 
+import { gameService } from "@/services/gameService";
 import { Tile, TilePosition, TileType } from "@/types/types";
 
 export class GameLogic {
@@ -8,12 +9,27 @@ export class GameLogic {
   private static readonly tileTypes: TileType[] = ['astronaut' , 'brain-slug' , 'galaxy' , 'laser-gun', 'millennium-falcon' , 'saturn' ];
   private movesMade: number = 0;
   private moveLimit: number = 5;
+  private gameId?: number;
+  private user?: number;
 
-
-  constructor(public width: number = 8, public height: number = 8) {
+  constructor(public width: number = 8, public height: number = 8, private token: string) {
     this.board = this.createInitialBoard();
     this.score = 0;
   }
+
+  public async initializeGame() {
+    try {
+      const newGame = await gameService.startNewGame(this.token);
+      this.gameId = newGame.id; 
+      this.user = newGame.user;
+      console.log("New game started:", newGame);
+    } catch (error) {
+      console.error("Error starting a new game:", error);
+      throw error;
+    }
+  }
+  
+  
 
   private createInitialBoard(): Tile[][] {
     let board: Tile[][] = [];
@@ -47,8 +63,7 @@ export class GameLogic {
     return { type: GameLogic.tileTypes[randomIndex] as TileType };
   }
 
-  public performSwap(firstTile: TilePosition, secondTile: TilePosition): void {
-    console.log("performSwap called", { firstTile, secondTile });
+  public async performSwap(firstTile: TilePosition, secondTile: TilePosition): Promise<void> {
     const temp = this.board[firstTile.row][firstTile.col];
     this.board[firstTile.row][firstTile.col] = this.board[secondTile.row][secondTile.col];
     this.board[secondTile.row][secondTile.col] = temp;
@@ -158,9 +173,24 @@ export class GameLogic {
   
       matches = this.findMatches();
     }
+
+    this.updateServerState();
   }
   
-  
+  private async updateServerState() {
+    if (this.gameId !== undefined) {
+      try {
+        console.log("Updating game:", this.gameId, this.token, { score: this.score, user: this.user });
+        const updatedGame = await gameService.updateGame(this.gameId, this.token, { user: this.user, score: this.score,  });
+        console.log("Game updated:", updatedGame);
+      } catch (error) {
+        console.error("Error updating the game:", error);
+        // Handle error appropriately
+      }
+    } else {
+      console.error("Error: gameId is not set");
+    }
+  }
 
   private removeMatches(matches: Array<TilePosition>): void {
     // Logic to mark matched tiles as empty

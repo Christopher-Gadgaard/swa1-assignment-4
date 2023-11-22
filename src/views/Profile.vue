@@ -1,3 +1,4 @@
+<!-- Profile.vue -->
 <template>
   <div class="profile">
     <UserProfile />

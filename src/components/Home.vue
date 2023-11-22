@@ -1,3 +1,4 @@
+<!--Components/Home.vue-->
 <template>
   <div class="home">
     <h1>Welcome to the Game</h1>

@@ -2,6 +2,7 @@
 import { gameService } from '@/services/gameService';
 import { ActionContext } from 'vuex';
 
+
 // Replace 'any' with the actual types of your game objects and user objects.
 export interface Game {
   id: number;
@@ -50,6 +51,14 @@ export const game = {
         const games = await gameService.fetchGames(token);
         console.log(games);
         commit('setGames', games);
+      } catch (error) {
+        commit('setError', (error as Error).message);
+      }
+    },async startNewGame(context: ActionContext<GameState, any>, token: string) {
+      const { commit } = context;
+      try {
+        const game = await gameService.startNewGame(token);
+        commit('setCurrentGame', game);
       } catch (error) {
         commit('setError', (error as Error).message);
       }

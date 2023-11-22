@@ -1,3 +1,4 @@
+<!--UserProfile.vue-->
 <template>
   <div>
     <p>Hello, {{ username }}</p>

@@ -2,19 +2,10 @@
 <template>
   <div class="game-board-container">
     <div class="card game-board">
-      <div
-        v-for="(row, rowIndex) in boardData"
-        :key="rowIndex"
-        class="board-row"
-      >
-        <GameTile
-          v-for="(tile, colIndex) in row"
-          :key="colIndex"
-          :tileImage="getTileImage(tile)"
-          :position="{ row: rowIndex, col: colIndex }"
-          :isSelected="isSelectedTile({ row: rowIndex, col: colIndex })"
-          @tile-clicked="handleTileClick"
-        />
+      <div v-for="(row, rowIndex) in boardData" :key="rowIndex" class="board-row">
+        <GameTile v-for="(tile, colIndex) in row" :key="colIndex" :tileImage="getTileImage(tile)"
+          :position="{ row: rowIndex, col: colIndex }" :isSelected="isSelectedTile({ row: rowIndex, col: colIndex })"
+          @tile-clicked="handleTileClick" />
       </div>
       <div class="game-info">
         <p>Score: {{ score }}</p>
@@ -30,6 +21,7 @@ import GameTile from "./GameTile.vue";
 import { Tile, TilePosition } from "@/types/types";
 import { GameLogic } from "@/models/GameLogic";
 import { computed } from "@vue/reactivity";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "GameBoard",
@@ -38,7 +30,10 @@ export default defineComponent({
   },
   setup() {
     // ViewModel part: managing state and interactions
-    const gameLogic = reactive(new GameLogic(8, 8));
+    const store = useStore();
+    const token = store.state.user.token;
+    console.log(token);
+    const gameLogic = reactive(new GameLogic(8, 8, token));
     const selectedTile = ref<TilePosition | null>(null);
     const score = computed(() => gameLogic.getScore());
     const remainingMoves = computed(() => gameLogic.getRemainingMoves());
@@ -66,8 +61,14 @@ export default defineComponent({
       }
     };
 
-    onMounted(() => {
-      // Initialize the board or handle any side effects needed when the component is mounted
+    onMounted(async () => {
+      try {
+        await gameLogic.initializeGame();
+        // Additional logic after game initialization
+      } catch (error) {
+        // Handle initialization error
+        console.error("Failed to initialize the game:", error);
+      }
     });
 
     // Expose state and methods to the template (View)
