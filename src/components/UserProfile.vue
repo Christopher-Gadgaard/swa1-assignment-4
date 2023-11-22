@@ -1,12 +1,11 @@
-<!--UserProfile.vue-->
 <template>
   <div>
-    <p>Hello, {{ username }}</p>
-    <button v-if="!showUpdate" @click="showUpdateField">Update Password</button>
-    <div v-if="showUpdate">
+    <p>Hello, {{ state.username }}</p>
+    <button v-if="!state.showUpdate" @click="showUpdateField">Update Password</button>
+    <div v-if="state.showUpdate">
       <input
         type="password"
-        v-model="newPassword"
+        v-model="state.newPassword"
         placeholder="Enter new password"
       />
       <button @click="updatePassword">Save</button>
@@ -16,37 +15,42 @@
 </template>
 
 <script lang="ts">
-import store from "@/store";
-import { useStore } from "vuex";
+import { ref, reactive } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
-  data() {
-    return {
-      username: "User", // Replace with dynamic data
-      showUpdate: false,
-      newPassword: "",
-    };
-  },
   setup() {
     const store = useStore();
     const playerId = store.state.user.id;
 
-    console.log(store.state.user.token, "token");
-    console.log(store.state.user.user.id, "id");
-  },
-  methods: {
-    showUpdateField() {
-      this.showUpdate = true;
-    },
-    updatePassword() {
+    // Use reactive for an object holding multiple properties
+    const state = reactive({
+      username: "User", // Replace with dynamic data
+      showUpdate: false,
+      newPassword: "",
+    });
+
+    function showUpdateField() {
+      state.showUpdate = true;
+    }
+
+    function updatePassword() {
       // Logic to update the password
-      this.showUpdate = false;
-      this.newPassword = "";
-    },
-    cancelUpdate() {
-      this.showUpdate = false;
-      this.newPassword = "";
-    },
-  },
+      state.showUpdate = false;
+      state.newPassword = "";
+    }
+
+    function cancelUpdate() {
+      state.showUpdate = false;
+      state.newPassword = "";
+    }
+
+    return { 
+      state, 
+      showUpdateField, 
+      updatePassword, 
+      cancelUpdate 
+    };
+  }
 };
 </script>
