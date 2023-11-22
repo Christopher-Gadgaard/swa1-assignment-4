@@ -71,7 +71,7 @@
             const login = async (userData: User) => {
                 const response = await authService.login(userData.username, userData.password);
                 console.log('Login successful:', response);
-                store.dispatch('user/login', response.user); // Dispatch login action
+                store.dispatch('user/login', { user: response.user, token: response.token });
                 router.push({ name: 'Home' }); // Navigate to home page
             };
     

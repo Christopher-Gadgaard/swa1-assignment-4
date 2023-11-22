@@ -3,7 +3,7 @@ import { createStore } from 'vuex'
 
 import user from "../store/modules/user";
 
-import { game } from './modules/game' // import the game module
+import  {game} from '../store/modules/game' // import the game module
 
 export default createStore({
   modules: {

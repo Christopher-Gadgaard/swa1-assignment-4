@@ -1,38 +1,49 @@
-//user.ts// User.ts
+// user.ts
 
 import { Module } from 'vuex';
 
-// Define state type
-export interface UserState {
-    currentUser: any;
+export interface User {
+  id?: string;
+  username: string;
+  // Other user properties
 }
 
-// Define initial state
+export interface UserState {
+  user: User | null;
+  token: string | null;
+}
+
 const state: UserState = {
-    currentUser: null,
+  user: null,
+  token: null,
 };
 
-// Define mutations, actions, getters
 const userModule: Module<UserState, any> = {
-    namespaced: true,
-    state,
-    mutations: {
-        SET_CURRENT_USER(state, user) {
-            state.currentUser = user;
-        },
+  namespaced: true,
+  state,
+  mutations: {
+    SET_USER(state, user: User | null) {
+      state.user = user;
     },
-    actions: {
-        login({ commit }, user) {
-            commit('SET_CURRENT_USER', user);
-        },
-        logout({ commit }) {
-            commit('SET_CURRENT_USER', null);
-        },
+    SET_TOKEN(state, token: string | null) {
+      state.token = token;
     },
-    getters: {
-        isLoggedIn: state => !!state.currentUser,
-        currentUser: state => state.currentUser,
+  },
+  actions: {
+    login({ commit }, { user, token }) {
+      commit('SET_USER', user);
+      commit('SET_TOKEN', token);
     },
+    logout({ commit }) {
+      commit('SET_USER', null);
+      commit('SET_TOKEN', null);
+    },
+  },
+  getters: {
+    isAuthenticated: state => !!state.token,
+    currentUser: state => state.user,
+    token: state => state.token,
+  },
 };
 
 export default userModule;

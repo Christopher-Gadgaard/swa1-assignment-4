@@ -3,19 +3,22 @@ import { ActionContext } from 'vuex';
 import { gameService } from '../../services/gameService'; // Update the path as necessary
 
 // Replace 'any' with the actual types of your game objects and user objects.
-interface Game {
+export interface Game {
   id: number;
-  // ... other properties of the game
+  score: number;
+  completed: boolean;
+  playerId: number;
+ 
 }
 
-interface GameState {
+export interface GameState {
   games: Game[];
   currentGame: Game | null;
   error: string | null;
 }
 
 export const game = {
-  namespaced: true, // This allows you to have multiple store modules coexist
+  namespaced: true, 
 
   // Define the state using the GameState interface
   state: (): GameState => ({

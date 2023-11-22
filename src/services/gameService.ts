@@ -4,10 +4,8 @@ export const gameService = {
   async fetchGames(token: string) {
     try {
       const games = await apiService.get('/games', token);
-      // Here you would commit to your Vuex store
       return games;
     } catch (error) {
-      // Handle error, possibly by committing an error state to the Vuex store
       throw error;
     }
   },

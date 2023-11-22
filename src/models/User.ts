@@ -1,7 +1,5 @@
 //User.ts
 
-// User.ts
-
 export interface User {
     id?: string; // Optional because it will be assigned by the server on user creation
     username: string;
