@@ -2,10 +2,19 @@
 <template>
   <div class="game-board-container">
     <div class="card game-board">
-      <div v-for="(row, rowIndex) in boardData" :key="rowIndex" class="board-row">
-        <GameTile v-for="(tile, colIndex) in row" :key="colIndex" :tileImage="getTileImage(tile)"
-          :position="{ row: rowIndex, col: colIndex }" :isSelected="isSelectedTile({ row: rowIndex, col: colIndex })"
-          @tile-clicked="handleTileClick" />
+      <div
+        v-for="(row, rowIndex) in boardData"
+        :key="rowIndex"
+        class="board-row"
+      >
+        <GameTile
+          v-for="(tile, colIndex) in row"
+          :key="colIndex"
+          :tileImage="getTileImage(tile)"
+          :position="{ row: rowIndex, col: colIndex }"
+          :isSelected="isSelectedTile({ row: rowIndex, col: colIndex })"
+          @tile-clicked="handleTileClick"
+        />
       </div>
       <div class="game-info">
         <p>Score: {{ score }}</p>
@@ -16,16 +25,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, onMounted } from 'vue';
-import GameTile from './GameTile.vue';
+import { defineComponent, ref, reactive, onMounted } from "vue";
+import GameTile from "./GameTile.vue";
 import { Tile, TilePosition } from "@/types/types";
 import { GameLogic } from "@/models/GameLogic";
-import { computed } from '@vue/reactivity';
+import { computed } from "@vue/reactivity";
 
 export default defineComponent({
-  name: 'GameBoard',
+  name: "GameBoard",
   components: {
-    GameTile
+    GameTile,
   },
   setup() {
     // ViewModel part: managing state and interactions
@@ -33,14 +42,16 @@ export default defineComponent({
     const selectedTile = ref<TilePosition | null>(null);
     const score = computed(() => gameLogic.getScore());
     const remainingMoves = computed(() => gameLogic.getRemainingMoves());
-    // Use a computed property to reactively access the game board
     const boardData = computed(() => gameLogic.getBoard());
 
     const isSelectedTile = (position: TilePosition) => {
-  return (selectedTile.value && selectedTile.value.row === position.row && selectedTile.value.col === position.col) || false;
-};
-
-
+      return (
+        (selectedTile.value &&
+          selectedTile.value.row === position.row &&
+          selectedTile.value.col === position.col) ||
+        false
+      );
+    };
 
     const handleTileClick = (position: TilePosition) => {
       if (selectedTile.value) {
@@ -48,7 +59,6 @@ export default defineComponent({
         if (gameLogic.simulateSwap(selectedTile.value, position)) {
           gameLogic.performSwap(selectedTile.value, position);
           gameLogic.processMatches();
-          // Additional logic if needed
         }
         selectedTile.value = null;
       } else {
@@ -69,9 +79,9 @@ export default defineComponent({
       handleTileClick,
       getTileImage(tile: Tile): string {
         return require(`@/assets/${tile.type}.svg`);
-      }
+      },
     };
-  }
+  },
 });
 </script>
 
@@ -80,7 +90,6 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .card {

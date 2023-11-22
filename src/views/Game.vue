@@ -9,35 +9,33 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import GameBoard from '@/components/GameBoard.vue';
+import { defineComponent } from "vue";
+import GameBoard from "@/components/GameBoard.vue";
 
 export default defineComponent({
-  name: 'GameView',
+  name: "GameView",
   components: {
-    GameBoard
+    GameBoard,
   },
 });
 </script>
 
 <style>
-/* Add styles here */
 .game-view-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Align items to the start of the container */
-  padding-top: 5vh; /* 10% from the top of the viewport height */
+  justify-content: flex-start;
+  padding-top: 5vh;
   text-align: center;
-  height: 90vh; /* Take up the rest of the height to push content to the top */
+  height: 90vh;
   background-image: url("../assets/SpaceBackground.png");
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-
 .game-logo {
-  max-width: 200px; /* Adjust the width as needed */
+  max-width: 200px;
   margin-bottom: 2rem;
 }
 </style>

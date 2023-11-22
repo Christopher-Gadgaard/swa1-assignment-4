@@ -1,10 +1,10 @@
 <!--ScoreBoard.vue-->
 
 <template>
-    <div class="scoreboard">
-      <h2>{{ title }}</h2>
-      <table>
-        <thead>
+  <div class="scoreboard">
+    <h2>{{ title }}</h2>
+    <table>
+      <thead>
         <tr>
           <th>Player</th>
           <th>Score</th>
@@ -16,23 +16,26 @@
           <td>{{ score.score }}</td>
         </tr>
       </tbody>
-      </table>
-    </div>
-  </template>
+    </table>
+  </div>
+</template>
 
 <script lang="ts">
-import { Game } from '@/store/modules/game';
+import { Game } from "@/store/modules/game";
 
 export default {
   props: {
     scores: {
       type: Array as () => Game[],
-      required: true
+      required: true,
     },
     title: {
       type: String,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 };
+
 </script>
+
+

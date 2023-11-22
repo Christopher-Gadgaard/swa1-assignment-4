@@ -9,6 +9,5 @@ export default {
   components: {
     UserProfile,
   },
-  // Other options like data, methods, etc.
 };
 </script>

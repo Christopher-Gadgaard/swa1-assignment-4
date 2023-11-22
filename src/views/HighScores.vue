@@ -47,7 +47,7 @@ export default {
 });
 
 
-   
+
     onMounted(async () => {
       if (store.state.user.token) {
         await store.dispatch('game/fetchGames', store.state.user.token);
