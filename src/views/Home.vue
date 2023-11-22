@@ -1,8 +1,28 @@
 <template>
-    <div class="home">
+  <div class="home">
+    <img
+      class="game-logo-home"
+      src="@/assets/GemQuest.png"
+      alt="Gem Quest Logo"
+    />
+    <Home />
+  </div>
+</template>
 
-    </div>
-  </template>
-  
-
-  
+<script lang="ts">
+import Home from "@/components/Home.vue";
+export default {
+  components: {
+    Home,
+  },
+  // Other options like data, methods, etc.
+};
+</script>
+<style>
+.game-logo-home {
+  background-color: rgb(66, 66, 66);
+  border-radius: 20px;
+  max-width: 200px; /* Adjust the width as needed */
+  margin-bottom: 2rem;
+}
+</style>

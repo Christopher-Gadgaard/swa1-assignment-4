@@ -46,17 +46,5 @@ export const authService = {
       throw error;
     }
   },
-
-  async updateUser(userId: string, userData: { /* user data fields to update */ }, token: string) {
-    try {
-      // The userData object should contain all the fields that you want to update
-      const data = await apiService.patch(`/users/${userId}`, token, userData);
-      // Handle the response, such as updating the local user details
-      return data;
-    } catch (error) {
-      console.error('User update failed:', error);
-      throw error;
-    }
-  }
   
 };
