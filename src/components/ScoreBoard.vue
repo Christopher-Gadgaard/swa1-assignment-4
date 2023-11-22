@@ -36,9 +36,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.scoreboard {
-  /* Your styles here */
-}
-</style>
